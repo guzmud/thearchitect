@@ -1,0 +1,24 @@
+#SAMPLE
+
+name[httpbin]
+version[alpha]
+
+#PIECES
+
+netcom.HTTPGetFromHostname["httpbin.org","/deny","theOracle"][theBuffer,buffsize]
+
+cli.print["\n"][]
+cli.print["HTTPGET"][]
+cli.print["\n"][]
+cli.print[theBuffer][]
+cli.print["\n"][]
+
+netcom.HTTPPostToHostname["httpbin.org","/post","theOracle","application/x-www-form-urlencoded","this is the data, cordialement bisous"][theBuffer,buffsize]
+
+cli.print["\n"][]
+cli.print["HTTPPOST"][]
+cli.print["\n"][]
+cli.print[theBuffer][]
+cli.print["\n"][]
+
+

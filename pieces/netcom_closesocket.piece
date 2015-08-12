@@ -1,0 +1,23 @@
+#DOC
+Close a socket and start WSACleanup
+Stolen from http://johnnie.jerrata.com/winsocktutorial/.
+In vars : socket handler (IVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+
+#INCLUDES
+<windows.h>,<winsock.h>
+
+#VARS
+
+#HEADER
+
+#MAIN
+
+closesocket(IVAR1);
+WSACleanup();
+
+#FOOTER

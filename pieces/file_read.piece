@@ -1,0 +1,35 @@
+#DOC
+Open and read the content of a file
+In vars : fullpath filename (IVAR1)
+Out vars : buffer with the content of the file (OVAR1), buffersize (OVAR2)
+
+#INVAR
+IVAR1
+
+#OTVAR
+OVAR1,OVAR2
+
+#INCLUDES
+<stdlib.h>,<stdio.h>
+
+#VARS
+FILE *fileptr,long OVAR2,char *OVAR1
+
+#HEADER
+
+#MAIN
+fileptr = fopen(IVAR1,"rb");
+fseek(fileptr,0,SEEK_END);
+OVAR2 = ftell(fileptr);
+fseek(fileptr,0,SEEK_SET);
+
+OVAR1 = malloc(OVAR2+1);
+
+if (fileptr)
+{
+fread(OVAR1,OVAR2,1,fileptr);
+(OVAR1)[OVAR2] = '\0';
+}
+fclose(fileptr);
+
+#FOOTER

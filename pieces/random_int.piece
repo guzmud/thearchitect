@@ -1,0 +1,27 @@
+#DOC
+Generate a random integer
+In vars : max value (IVAR1)
+Out vars : random integer (OVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>,<wincrypt.h>
+
+#VARS
+HCRYPTPROV prov, unsigned int OVAR1
+
+#HEADER
+
+#MAIN
+CryptAcquireContext(&prov, NULL, NULL, PROV_RSA_FULL, 0);
+OVAR1 = 0;
+CryptGenRandom(prov, sizeof(OVAR1), (BYTE *)&OVAR1);
+OVAR1 = (OVAR1 % IVAR1)+1;
+CryptReleaseContext(prov,0);
+
+#FOOTER

@@ -1,0 +1,20 @@
+#DOC
+Cast an integer into a string
+In vars : the integer name (IVAR1), the integer starting value (IVAR2)
+
+#INVAR
+IVAR1, IVAR2
+
+#OTVAR
+
+#INCLUDES
+
+#VARS
+int IVAR1
+
+#HEADER
+
+#MAIN
+IVAR1 = IVAR2;
+
+#FOOTER

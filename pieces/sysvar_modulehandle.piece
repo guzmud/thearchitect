@@ -1,0 +1,23 @@
+#DOC
+Get local env variable
+In vars : module name (IVAR1)
+Out vars : output variable (OVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+HMODULE OVAR1
+
+#HEADER
+
+#MAIN
+OVAR1 = GetModuleHandle(IVAR1);
+
+#FOOTER

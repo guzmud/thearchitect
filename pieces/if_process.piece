@@ -1,0 +1,51 @@
+#DOC
+Checking if process running by name.
+Stolen from http://forums.codeguru.com/showthread.php?542741-how-to-safely-use-EnumProcesses-older-and-new-OS
+Todo : Will try with WTSEnumerateProcesses first, use EnumProcesses as a backup.
+In vars : name to check (IVAR1), if reaction (IVAR2), else reaction (IVAR3)
+
+#INVAR
+IVAR1,IVAR2,IVAR3
+
+#OTVAR
+
+#INCLUDES
+<windows.h>,<wtsapi32.h>,<psapi.h>
+
+#VARS
+char *s, DWORD dwCnt, WTS_PROCESS_INFO *pWPI, DWORD dwcbRead, DWORD procIDs[2048], DWORD y, int err
+
+#HEADER
+
+dwCnt = 0;
+pWPI = NULL;
+dwcbRead = 0;
+
+if(WTSEnumerateProcesses(WTS_CURRENT_SERVER_HANDLE, 0, 1, &pWPI, &dwCnt))
+{
+EnumProcesses(procIDs, sizeof(procIDs), &dwcbRead);	
+}
+else
+{
+err = GetLastError();
+}
+
+#MAIN
+for(y = 0; y < dwCnt; y++)
+{
+if (strcmp(pWPI[y].pProcessName,IVAR1) == 0)
+{
+IVAR2
+}
+else
+{
+IVAR3
+}
+}
+
+#FOOTER
+
+if(pWPI)
+{
+WTSFreeMemory(pWPI);
+}

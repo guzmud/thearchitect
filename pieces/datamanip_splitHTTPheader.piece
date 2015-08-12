@@ -1,0 +1,41 @@
+#DOC
+Split a char around the first occurence of xODOAODOA
+In vars : input buffer (IVAR1), buffer size (IVAR2)
+Out vars : HTTPHeader (OVAR1), HTTPData (OVAR2), headersize (OVAR3), datasize (OVAR4)
+
+#INVAR
+IVAR1, IVAR2
+
+#OTVAR
+OVAR1,OVAR2,OVAR3,OVAR4
+
+#INCLUDES
+
+#VARS
+int i, unsigned char* OVAR1, unsigned char* OVAR2, int value, unsigned char *splitptr, int pos, int OVAR3, int OVAR4
+
+#HEADER
+
+#MAIN
+splitptr = strstr(IVAR1, "\r\n\r\n");
+pos = splitptr - IVAR1;
+
+OVAR3 = pos;
+OVAR4 = IVAR2-pos-4;
+
+OVAR1 = malloc(OVAR3+1);
+OVAR2 = malloc(OVAR4+1);
+
+for (i=0;i<OVAR3;i++)
+{
+    OVAR1[i] = IVAR1[i];
+}
+OVAR1[OVAR3] = '\0';
+
+for (i=0;i<OVAR4;i++)
+{
+    OVAR2[i] = IVAR1[pos+4+i];
+}
+OVAR2[OVAR4] = '\0';
+
+#FOOTER

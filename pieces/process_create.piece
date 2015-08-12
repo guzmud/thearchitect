@@ -1,0 +1,28 @@
+#DOC
+Creating a process
+In vars : executable fullpath (IVAR1), process args (IVAR2), process flags (IVAR3)
+Out vars : process handler (OVAR1)
+
+#INVAR
+IVAR1,IVAR2,IVAR3
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+STARTUPINFO siStartupInfo, PROCESS_INFORMATION piProcessInfo, HANDLE OVAR1
+
+#HEADER
+
+#MAIN
+memset(&siStartupInfo, 0, sizeof(siStartupInfo));
+memset(&piProcessInfo, 0, sizeof(piProcessInfo));
+siStartupInfo.cb = sizeof(siStartupInfo);
+
+CreateProcess(IVAR1, IVAR2, 0, 0, FALSE, IVAR3, 0, 0, &siStartupInfo, &piProcessInfo);
+OVAR1 = piProcessInfo.hThread;
+
+#FOOTER

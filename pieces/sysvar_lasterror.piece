@@ -1,0 +1,25 @@
+#DOC
+Variable embedding the GetLastError value (following an instruction, used for defensive and environmental-awareness routines)
+In vars : instruction (IVAR1)
+Out vars : variable name (OVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+DWORD OVAR1
+
+#HEADER
+
+#MAIN
+IVAR1
+
+OVAR1 = GetLastError();
+
+#FOOTER

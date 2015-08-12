@@ -1,0 +1,84 @@
+#SAMPLE
+
+name[Anderson]
+version[alpha]
+
+#PIECES
+
+cli.print["ANDERSON\n"][]
+
+## testing file
+
+cli.print["\n\tTesting file\n"][]
+
+file.writetxt["thespoon.txt","Do not try and bend the spoon. That's impossible. Instead... only try to realize the truth.\nWhat truth?\nThere is no spoon. "][]
+file.read["thespoon.txt"][filedata,filesize]
+cli.print[filedata][]
+cli.print["\n"][]
+
+## testing gui
+
+cli.print["\n\tTesting gui\n"][]
+
+gui.messagebox["NEO", "Wake up neo"][]
+
+## testing mutex
+
+cli.print["\n\tTesting mutex\n"][]
+
+mutex.create["thewhiterabbit"][muthandle]
+mutex.release[muthandle][]
+
+## testing netcom
+
+cli.print["\n\tTesting netcom\n"][]
+
+netcom.localip[][localip]
+cli.print[localip][]
+cli.print["\n"][]
+
+netcom.sendPING["google.de"][]
+
+netcom.HTTPGetFromHostname["httpbin.org","/deny","theOracle"][theBuffer,buffsize]
+cli.print[theBuffer][]
+cli.print["\n"][]
+
+## testing process
+
+cli.print["\n\tTesting process\n"][]
+
+sysvar.exepath[][lpath]
+process.create[lpath,NULL,CREATE_SUSPENDED][phandle]
+
+## testing random
+
+cli.print["\n\tTesting random\n"][]
+random.str[7][randstr]
+cli.print[randstr][]
+cli.print["\n"][]
+
+## testing registry
+
+cli.print["\n\tTesting registry\n"][]
+
+reg.readstr[HKEY_LOCAL_MACHINE, "HARDWARE\\Description\\System","SystemBiosVersion"][sbversion]
+cli.print[sbversion][]
+cli.print["\n"][]
+
+reg.writevalue[HKEY_CURRENT_USER, "Volatile Environment", "THEWHITERABBIT", "I am running late."][]
+
+reg.readstr[HKEY_CURRENT_USER, "Volatile Environment","THEWHITERABBIT"][regstr]
+cli.print[regstr][]
+cli.print["\n"][]
+
+## testing sysvar
+
+cli.print["\n\tTesting sysvar\n"][]
+
+sysvar.getusername[][username]
+cli.print[username][]
+cli.print["\n"][]
+
+sysvar.exepath[][exepath]
+cli.print[exepath][]
+cli.print["\n"][]

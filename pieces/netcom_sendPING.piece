@@ -1,0 +1,109 @@
+#DOC
+Create a WinSock, send a PING request (ICMP ECHO, 8)
+Stolen from http://www.binarytides.com/winsock-icmp-ping-flood-code-c-sockets/
+In vars : hostname (IVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+
+#INCLUDES
+<windows.h>,<winsock.h>,<stdint.h>
+
+#VARS
+WSADATA wsaData, int nret, LPHOSTENT hostEntry, SOCKET datSocket, SOCKADDR_IN serverInfo, struct iphdr *iph, char* packet, char* data, int payload_size, int packet_size, int nret
+
+#HEADER
+struct icmphdr
+{
+    uint8_t type;
+    uint8_t code;
+    uint16_t checksum;
+    union
+    {
+        struct
+        {
+            uint16_t id;
+            uint16_t sequence;
+        } echo;
+        uint32_t gateway;
+        struct
+        {
+            uint16_t __unused;
+            uint16_t mtu;
+        } frag;
+    } un;
+};
+
+#MAIN
+struct icmphdr *icmph;
+payload_size = 512;
+
+WSAStartup(MAKEWORD(2,2), &wsaData);
+
+hostEntry = gethostbyname(IVAR1);
+
+if (!hostEntry)
+{
+    printf("Host entry issue\n");
+    WSACleanup();
+}
+
+datSocket = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
+
+if (datSocket == INVALID_SOCKET)
+{
+    printf("Invalid socket error\n");
+    nret = WSAGetLastError();
+    printf("%i\n", nret);
+    WSACleanup();
+}
+
+serverInfo.sin_family = AF_INET;
+serverInfo.sin_addr = *((LPIN_ADDR)*hostEntry->h_addr_list);
+
+packet_size = sizeof(struct icmphdr) + payload_size;
+packet = (char *)malloc(packet_size);
+memset(packet, 0, packet_size);
+
+icmph = (struct icmphdr*) packet;
+icmph->type = 8;
+icmph->code = 0;
+icmph->un.echo.sequence = rand();
+icmph->un.echo.id = rand();
+
+data = packet+sizeof(struct icmphdr);
+memset(data, '^', payload_size);
+
+icmph->checksum = 0;
+
+unsigned short *icptr = (unsigned short *)icmph;
+int nbytes = packet_size; 
+register long sum;
+u_short oddbyte;
+register u_short answer;
+ 
+sum = 0;
+while (nbytes > 1) {
+    sum += *icptr++;
+    nbytes -= 2;
+}
+
+if (nbytes == 1) {
+    oddbyte = 0;
+    *((u_char *) & oddbyte) = *(u_char *) icptr;
+    sum += oddbyte;
+}
+ 
+sum = (sum >> 16) + (sum & 0xffff);
+sum += (sum >> 16);
+answer = ~sum;
+icmph->checksum = answer;
+
+sendto(datSocket, packet, packet_size, 0, (LPSOCKADDR)&serverInfo, sizeof(serverInfo));
+
+closesocket(datSocket);
+WSACleanup();
+
+#FOOTER

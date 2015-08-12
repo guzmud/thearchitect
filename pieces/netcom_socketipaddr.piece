@@ -1,0 +1,54 @@
+#DOC
+Create a WinSock connected to ip-resolved hostname
+Stolen from http://johnnie.jerrata.com/winsocktutorial/.
+In vars : ip address (IVAR1)
+Out vars : socket handler (OVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>,<winsock.h>,<stdint.h>
+
+#VARS
+WSADATA wsaData, int nret, LPHOSTENT hostEntry, SOCKET OVAR1, SOCKADDR_IN serverInfo, IN_ADDR iaHost
+
+#HEADER
+
+#MAIN
+
+WSAStartup(MAKEWORD(1,1), &wsaData);
+
+iaHost.s_addr = inet_addr(IVAR1);
+hostEntry = gethostbyaddr((const char *)&iaHost, sizeof(struct in_addr), AF_INET);
+
+if (!hostEntry)
+{
+    printf("Host entry issue\n");
+    WSACleanup();
+}
+
+OVAR1 = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+if (OVAR1 == INVALID_SOCKET)
+{
+    printf("Invalid socket error\n");
+    WSACleanup();
+}
+
+serverInfo.sin_family = AF_INET;
+serverInfo.sin_addr = *((LPIN_ADDR)*hostEntry->h_addr_list);
+serverInfo.sin_port = htons(80);
+
+nret = connect(OVAR1,(LPSOCKADDR)&serverInfo,sizeof(struct sockaddr));
+
+if (nret == SOCKET_ERROR)
+{
+    printf("Socket issue\n");
+    WSACleanup();
+}
+
+#FOOTER

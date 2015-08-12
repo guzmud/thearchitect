@@ -1,0 +1,22 @@
+#DOC
+Using a connected socket to send data
+In vars : socket handler (IVAR1), HTTP request (IVAR2)
+
+#INVAR
+IVAR1,IVAR2
+
+#OTVAR
+
+#INCLUDES
+<windows.h>,<winsock.h>,<winsock2.h>
+
+#VARS
+SOCKET IVAR1, char* IVAR2
+
+#HEADER
+
+#MAIN
+
+send(IVAR1, IVAR2, strlen(IVAR2), 0);
+
+#FOOTER

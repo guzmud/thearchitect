@@ -1,0 +1,23 @@
+#DOC
+Open a file and write in it (write a POINTER)
+In vars : fullpath filename (IVAR1), data to write (IVAR2), datasize (IVAR3)
+
+#INVAR
+IVAR1, IVAR2, IVAR3
+
+#OTVAR
+
+#INCLUDES
+<stdlib.h>,<malloc.h>
+
+#VARS
+FILE *fileptr
+
+#HEADER
+
+#MAIN
+fileptr = fopen(IVAR1,"wb+");
+fwrite(IVAR2, IVAR3, 1, fileptr);
+fclose(fileptr);
+
+#FOOTER

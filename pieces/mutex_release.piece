@@ -1,0 +1,21 @@
+#DOC
+Release a mutex (no error management)
+In vars : mutex handler (IVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+
+#INCLUDES
+<windows.h>
+
+#VARS
+HANDLE IVAR1
+
+#HEADER
+
+#MAIN
+ReleaseMutex(IVAR1);
+
+#FOOTER

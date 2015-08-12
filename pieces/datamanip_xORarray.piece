@@ -1,0 +1,29 @@
+#DOC
+xOR an array (OVAR1 = IVAR1 xOR IVAR2)
+In vars : input buffer (IVAR1), xOR key (IVAR2)
+Out vars : output buffer (OVAR1), buffersize (OVAR2)
+
+#INVAR
+IVAR1,IVAR2
+
+#OTVAR
+OVAR1, OVAR2
+
+#INCLUDES
+
+#VARS
+int i, char* OVAR1, int value, int OVAR2
+
+#HEADER
+
+#MAIN
+OVAR1 = malloc((sizeof(IVAR1)/2)+1);
+for (i=0;i<(sizeof(IVAR1)/2);i++)
+{
+    sscanf(IVAR1+2*i,"%02x",&value);
+    OVAR1[i] = (char)(value^IVAR2);
+}
+OVAR1[sizeof(IVAR1)/2]='\0';
+OVAR2 = sizeof(IVAR1)/2;
+
+#FOOTER

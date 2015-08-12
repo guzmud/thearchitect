@@ -1,0 +1,33 @@
+#DOC
+Read registry key value data (if data is string / REG_SZ)
+In vars : registry (IVAR1), registry key full path (IVAR2), value to query name (IVAR3)
+Out vars : buffered value (OVAR1)
+
+#INVAR
+IVAR1,IVAR2, IVAR3
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+HKEY rK, DWORD dwType, DWORD dwDataSize, char *OVAR1
+
+#HEADER
+OVAR1=NULL;
+dwType=0;
+dwDataSize=0;
+
+#MAIN
+RegOpenKeyEx(IVAR1, TEXT(IVAR2), 0, KEY_QUERY_VALUE, &rK);
+RegQueryValueEx(rK, TEXT(IVAR3), NULL, &dwType, NULL, &dwDataSize);
+
+OVAR1 = (char *)malloc(dwDataSize+1);
+
+RegQueryValueEx(rK, TEXT(IVAR3), NULL, &dwType, OVAR1, &dwDataSize);
+OVAR1[dwDataSize/sizeof(TCHAR)] = TEXT('\0');
+
+#FOOTER
+RegCloseKey(rK);

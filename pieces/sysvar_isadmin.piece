@@ -1,0 +1,31 @@
+#DOC
+Return a string (1 is admin, 0 is not)
+Out vars : boolean string (OVAR1)
+
+#INVAR
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+BOOL tabol, BOOL tares, PSID AdministratorsGroup, char OVAR1[255]
+
+#HEADER
+
+#MAIN
+SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+AdministratorsGroup = NULL;
+tares = AllocateAndInitializeSid(&NtAuthority, 2, SECURITY_BUILTIN_DOMAIN_RID, DOMAIN_ALIAS_RID_ADMINS, 0, 0, 0, 0, 0, 0, &AdministratorsGroup);
+tabol = FALSE;
+
+if (tares) {
+CheckTokenMembership(NULL,AdministratorsGroup, &tabol);
+FreeSid(AdministratorsGroup);
+}
+
+snprintf(OVAR1, sizeof(OVAR1), "%d", tabol);
+
+#FOOTER

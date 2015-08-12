@@ -1,0 +1,136 @@
+#DEF
+netcom.HTTPGetFromHostname[IVAR1,IVAR2,IVAR3][OVAR1,OVAR2]
+
+#ALIAS
+netcom.HTTPGetrequest[IVAR1,IVAR2,IVAR3][theRequest]
+netcom.sockethostname[IVAR1][theSocket]
+netcom.HTTPsend[theSocket,theRequest][]
+netcom.HTTPrecv[theSocket][OVAR1,OVAR2]
+netcom.closesocket[theSocket][]
+
+#DEF
+netcom.HTTPPostToHostname[IVAR1,IVAR2,IVAR3,IVAR4,IVAR5][OVAR1,OVAR2]
+
+#ALIAS
+netcom.HTTPPostrequest[IVAR1,IVAR2,IVAR3,IVAR4,IVAR5][theRequest]
+netcom.sockethostname[IVAR1][theSocket]
+netcom.HTTPsend[theSocket,theRequest][]
+netcom.HTTPrecv[theSocket][OVAR1,OVAR2]
+netcom.closesocket[theSocket][]
+
+#DEF
+junk.regcheck[][]
+
+#ALIAS
+random.str[20][randstr]
+datamanip.catstr["SYSTEM/CurrentControlSet/Control/",randstr][randregpath]
+if.regkey[randregpath,sleep(1),sleep(1)][]
+
+#DEF
+junk.filecheck[][]
+
+#ALIAS
+random.str[15][randstr]
+sysvar.getenv["USERPROFILE"][usrvar]
+datamanip.catstr[usrvar,"/"][datfilepath1]
+datamanip.catstr[datfilepath1,randstr][datfilepath2]
+if.file[datfilepath2,sleep(1),sleep(1)][]
+
+#DEF
+junk.maths[][]
+
+#ALIAS
+random.int[13][randint1]
+random.int[21][randint2]
+random.int[34][randint3]
+random.int[55][randint4]
+junk.operations[randint1,randint2,randint3][randint4]
+
+#DEF
+if.mousemov[IVAR1,IVAR2,IVAR3, IVAR4][]
+
+#ALIAS
+datamanip.asival[POINT,GetCursorPos][pos1]
+direct[Sleep(IVAR1)][]
+datamanip.asival[POINT,GetCursorPos][pos2]
+if.deltaval[pos1.x, pos2.x, IVAR2, IVAR3, IVAR4][]
+if.deltaval[pos1.y, pos2.y, IVAR2, IVAR3, IVAR4][]
+
+#DEF
+if.username[IVAR1, IVAR2, IVAR3][]
+
+#ALIAS
+sysvar.getusername[][userstr]
+if.strdelta[userstr, IVAR1, IVAR2, IVAR3][]
+
+#DEF
+if.computername[IVAR1, IVAR2, IVAR3][]
+
+#ALIAS
+sysvar.getenv["COMPUTERNAME"][compstr]
+if.strdelta[compstr, IVAR1,IVAR2,IVAR3][]
+
+#DEF
+if.filepath[IVAR1, IVAR2, IVAR3][]
+
+#ALIAS
+sysvar.exepath[][pathstr]
+if.strdelta[pathstr, IVAR1,IVAR2,IVAR3][]
+
+#DEF
+if.module[IVAR1,IVAR2,IVAR3][]
+
+#ALIAS
+sysvar.modulehandle[IVAR1][hmodval]
+if.equalval[hmodval,0,IVAR3,IVAR2][]
+
+#DEF
+if.modulefunction[IVAR1,IVAR2,IVAR3,IVAR4][]
+
+#ALIAS
+sysvar.modulehandle[IVAR1][hmodval]
+sysvar.procaddress[hmodval, IVAR2][fprocval]
+if.equalval[fprocval,0,IVAR4,IVAR3][]
+
+#DEF
+if.regstr[IVAR1,IVAR2,IVAR3,IVAR4,IVAR5][]
+
+#ALIAS
+reg.readstr[HKEY_LOCAL_MACHINE, IVAR1,IVAR2][rgstr]
+if.strdelta[rgstr, IVAR3,IVAR4,IVAR5][]
+
+#DEF
+if.exactregstr[IVAR1,IVAR2,IVAR3,IVAR4,IVAR5][]
+
+#ALIAS
+reg.readstr[HKEY_LOCAL_MACHINE, IVAR1,IVAR2][rgstr]
+if.strequal[rgstr, IVAR3,IVAR4,IVAR5][]
+
+#DEF
+if.debugger[IVAR1,IVAR2][]
+
+#ALIAS
+datamanip.retval[BOOL, (direct[IsDebuggerPresent\(\)][])][boolval]
+if.equalval[boolval,1,IVAR1,IVAR2][]
+if.asivar[BOOL, CheckRemoteDebuggerPresent(GetCurrentProcess, &BOOLasivar);, 1,IVAR1,IVAR2][]
+
+#DEF
+if.regkey[IVAR1,IVAR2,IVAR3,IVAR4][]
+
+#ALIAS
+datamanip.retval[LONG, (reg.open[IVAR1, IVAR2][hkey])][longval]
+if.equalval[longval,0,IVAR3,IVAR4][]
+
+#DEF
+if.filexist[IVAR1,IVAR2,IVAR3][]
+
+#ALIAS
+datamanip.retval[DWORD, (direct[GetFileAttributes\(IVAR1\)][])][dwordval]
+if.equalval[dwordval,INVALID_FILE_ATTRIBUTES,IVAR3,IVAR2][]
+
+#DEF
+if.mutex[IVAR1,IVAR2,IVAR3][]
+
+#ALIAS
+sysvar.lasterror[(mutex.create[IVAR1][hMutex])][humanumest]
+if.equalval[humanumest,ERROR_ALREADY_EXISTS,IVAR2,ReleaseMutex(hMutex);IVAR3][]

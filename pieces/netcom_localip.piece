@@ -1,0 +1,26 @@
+#DOC
+Get local IP value
+Out vars : string containing the IP value (OVAR1)
+
+#INVAR
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<winsock2.h>
+
+#VARS
+WSADATA wsaData, char *OVAR1, char szHostName[255], LPHOSTENT hostEntry
+
+#HEADER
+
+#MAIN
+if(WSAStartup(MAKEWORD(2,0), &wsaData) != -1) {
+gethostname(szHostName, 255);
+hostEntry = gethostbyname(szHostName);
+OVAR1 = inet_ntoa(*(struct in_addr *)*hostEntry->h_addr_list);
+WSACleanup();
+}
+
+#FOOTER

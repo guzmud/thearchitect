@@ -1,0 +1,22 @@
+#DOC
+Loop in a range of k
+In vars : loopsize (IVAR1), loop behaviour (IVAR2)
+
+#INVAR
+IVAR1, IVAR2
+
+#OTVAR
+
+#INCLUDES
+
+#VARS
+int i
+
+#HEADER
+for (i=0;i<IVAR1;i++) {
+
+#MAIN
+IVAR2
+
+#FOOTER
+}

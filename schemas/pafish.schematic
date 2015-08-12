@@ -1,0 +1,76 @@
+#SAMPLE
+
+name[pafish]
+version[alpha]
+
+#PIECES
+
+cli.print["PAFISH IMITATION\n"][]
+
+## Detect debugger : IsDebuggerPresent() + CheckRemoteDebuggerPresent()
+
+if.debugger[(cli.print["Found debugger\n"][]),(cli.print["Fail debugger\n"][])][]
+
+## Detect hooked functions
+
+if.hookedfx[{DeleteFileW,CreateProcess},(cli.print["Found hook\n"][]),(cli.print["Fail hook\n"][])][]
+
+## Detect sandboxes : dead mouse ?
+
+if.mousemov[4242, 10, (cli.print["Found dead mouse\n"][]),(cli.print["Fail dead mouse\n"][])][]
+
+## Detect sandboxes : impossible mouse ?
+
+if.mousemov[13, 200, (cli.print["Fail impossible mouse\n"][]),(cli.print["Found impossible mouse\n"][])][]
+
+## Detect sandboxes : username
+
+if.username[{"sample","qemu","virus","sandbox","malware","virtual","simulation"},(cli.print["Found sandbox \(username\)\n"][]),(cli.print["Fail sandbox \(username\)\n"][])][]
+
+## Detect sandboxes : computer name
+
+if.computername[{"sample","qemu","virus","sandbox","malware","virtual","simulation"},(cli.print["Found sandbox \(computername\)\n"][]),(cli.print["Fail sandbox \(computername\)\n"][])][]
+
+## Detect sandboxes : filepath
+
+if.filepath[{"sample","qemu","virus","sandbox","malware","virtual","simulation"},(cli.print["Found sandbox \(filepath\)\n"][]),(cli.print["Fail sandbox \(filepath\)\n"][])][]
+
+## Detect sandboxie : is sbiedll.dll a valid module ?
+
+if.module["sbiedll.dll",(cli.print["Found sandboxie module\n"][]),(cli.print["Fail sandboxie module\n"][])][]
+
+## Detect wine : is wine_get_unix_file_name in kernel32.dll ?
+
+if.modulefunction["kernel32.dll","wine_get_unix_file_name",(cli.print["Found Wine module\n"][]),(cli.print["Fail Wine module\n"][])][]
+
+## Detect virtual machines : hard drive identifier
+
+if.regstr["HARDWARE\\DEVICEMAP\\Scsi\\Scsi Port 0\\Scsi Bus 0\\Target Id 0\\Logical Unit Id 0","Identifier",{"vbox","vmware","qemu"},(cli.print["Found virtual machine \(hard drive\)\n"][]),(cli.print["Fail virtual machines \(hard drive\)\n"][])][]
+
+## Detect virtual machines : System Bios Version
+
+if.regstr["HARDWARE\\Description\\System","SystemBiosVersion",{"vbox","vmware","qemu"},(cli.print["Found virtual machine \(system bios\)\n"][]),(cli.print["Fail virtual machines \(system bios\)\n"][])][]
+
+## Detect virtualbox : Video Bios Version
+
+if.regstr["HARDWARE\\Description\\System","VideoBiosVersion",{"virtualbox", "vbox", "vmware","qemu"},(cli.print["Found virtual machine \(video bios\)\n"][]),(cli.print["Fail virtual machines \(video bios\)\n"][])][]
+
+## Detecting virtualbox : VirtualBox Guest Additions
+
+if.regkey[HKEY_LOCAL_MACHINE, "SOFTWARE\\Oracle\\VirtualBox Guest Additions",(cli.print["Found VBOX \(guests additions\)\n"][]),(cli.print["Fail VBOX \(guests additions\)\n"][])][]
+
+## Detecting vmware : Vmware tools
+
+if.regkey[HKEY_LOCAL_MACHINE, "SOFTWARE\\VMware, Inc.\\VMware Tools",(cli.print["Found VMware \(tools\)\n"][]),(cli.print["Fail VMware \(tools\)\n"][])][]
+
+## Detecting virtualbox : VBoxMouse.sys driver
+
+if.filexist["C:\\WINDOWS\\system32\\drivers\\VBoxMouse.sys",(cli.print["Found VBOX \(mouse driver\)\n"][]),(cli.print["Fail VBOX \(mouse driver\)\n"][])][]
+
+## Detecting vmware : vmmouse.sys driver
+
+if.filexist["C:\\WINDOWS\\system32\\drivers\\vmmouse.sys",(cli.print["Found VMware \(mouse driver\)\n"][]),(cli.print["Fail VMware \(mouse driver\)\n"][])][]
+
+## Detecting vmware : vmhgfs.sys driver
+
+if.filexist["C:\\WINDOWS\\system32\\drivers\\vmhgfs.sys",(cli.print["Found VMware \(shared folder driver\)\n"][]),(cli.print["Fail VMware \(shared folder driver\)\n"][])][]

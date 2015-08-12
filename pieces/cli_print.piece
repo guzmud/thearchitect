@@ -1,0 +1,19 @@
+#DOC
+Printing an array in stdout
+In vars : array (IVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+
+#INCLUDES
+
+#VARS
+
+#HEADER
+
+#MAIN
+printf(IVAR1);
+
+#FOOTER

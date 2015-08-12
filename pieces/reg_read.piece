@@ -1,0 +1,25 @@
+#DOC
+Reading a registry key
+In vars : registry path (IVAR1), registry key (IVAR2)
+Out vars : registry key value (OVAR1)
+
+#INVAR
+IVAR1, IVAR2
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+HKEY key, char OVAR1[255], DWORD buffersize
+
+#HEADER
+buffersize = 8192;
+
+#MAIN
+RegGetValue(HKEY_LOCAL_MACHINE, IVAR1, IVAR2, RRF_RT_ANY, NULL, (PVOID)&OVAR1,&buffersize);
+RegCloseKey(key);
+
+#FOOTER

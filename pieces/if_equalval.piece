@@ -1,0 +1,28 @@
+#DOC
+If return value
+In vars : tested variable (IVAR1), tested value (IVAR2), if reaction (IVAR3), else reaction (IVAR4)
+
+#INVAR
+IVAR1,IVAR2,IVAR3,IVAR4
+
+#OTVAR
+
+#INCLUDES
+<windows.h>
+
+#VARS
+
+#HEADER
+
+#MAIN
+
+if (IVAR1 == IVAR2)
+{
+IVAR3
+}
+else
+{
+IVAR4
+}
+
+#FOOTER

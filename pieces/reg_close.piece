@@ -1,0 +1,21 @@
+#DOC
+Closing a registry key, given as an input argument
+In vars : key variable (IVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+
+#INCLUDES
+<windows.h>
+
+#VARS
+HKEY IVAR1
+
+#HEADER
+
+#MAIN
+RegCloseKey(IVAR1);
+
+#FOOTER

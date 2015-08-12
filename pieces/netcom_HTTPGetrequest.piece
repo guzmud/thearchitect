@@ -1,0 +1,31 @@
+#DOC
+Construct the HTTP Get header
+In vars : server name (IVAR1), server ressource (IVAR2), user agent (IVAR3)
+Out vars : buffered header (OVAR1)
+
+#INVAR
+IVAR1,IVAR2,IVAR3
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+
+#VARS
+char* OVAR1
+
+#HEADER
+
+#MAIN
+
+OVAR1 = malloc(63+strlen(IVAR2)+strlen(IVAR1)+strlen(IVAR3)+1);
+
+strcpy(OVAR1, "GET ");
+strcat(OVAR1, IVAR2);
+strcat(OVAR1, " HTTP/1.1\r\nHost: ");
+strcat(OVAR1, IVAR1);
+strcat(OVAR1, "\r\nConnection: keep-alive\r\nUser-Agent: ");
+strcat(OVAR1, IVAR3);
+strcat(OVAR1, "\r\n\r\n");
+
+#FOOTER

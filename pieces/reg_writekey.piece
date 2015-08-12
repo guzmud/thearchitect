@@ -1,0 +1,23 @@
+#DOC
+Create registry key
+Todo : gestion du lpdwDisposition si pre-existe
+In vars : registry (IVAR1), registry key full path (IVAR2)
+
+#INVAR
+IVAR1, IVAR2
+
+#OTVAR
+
+#INCLUDES
+<windows.h>,<winreg.h>
+
+#VARS
+HKEY rK
+
+#HEADER
+
+#MAIN
+RegCreateKeyEx(IVAR1, TEXT(IVAR2), 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &rK, NULL);
+
+#FOOTER
+RegCloseKey(rK);

@@ -1,0 +1,23 @@
+#DOC
+Get local env variable
+In vars : module handle (IVAR1), proc name (IVAR2)
+Out vars : output variable (OVAR1)
+
+#INVAR
+IVAR1,IVAR2
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+FARPROC OVAR1
+
+#HEADER
+
+#MAIN
+OVAR1 = GetProcAddress(IVAR1,IVAR2);
+
+#FOOTER

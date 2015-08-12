@@ -1,0 +1,27 @@
+#DOC
+Get local Windows version
+Out vars : windows major version (OVAR1), Windows minor version (OVAR2)
+
+#INVAR
+
+#OTVAR
+OVAR1,OVAR2
+
+#INCLUDES
+<windows.h>
+
+#VARS
+int OVAR1, int OVAR2, OSVERSIONINFO osvi
+
+#HEADER
+
+#MAIN
+
+memset(&osvi,0,sizeof(OSVERSIONINFO));
+osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+GetVersionEx(&osvi);
+
+OVAR1 = osvi.dwMajorVersion;
+OVAR2 = osvi.dwMinorVersion;
+
+#FOOTER

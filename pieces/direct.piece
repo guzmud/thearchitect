@@ -1,0 +1,19 @@
+#DOC
+Direct coding, adds a ; at the end
+In vars : code (IVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+
+#INCLUDES
+
+#VARS
+
+#HEADER
+
+#MAIN
+IVAR1;
+
+#FOOTER

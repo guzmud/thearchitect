@@ -1,0 +1,39 @@
+#DOC
+Construct the HTTP Post header
+In vars : server name (IVAR1), server ressource (IVAR2), user agent (IVAR3), MIME type (IVAR4), data to post (IVAR5)
+Out vars : buffered header (OVAR1)
+
+#INVAR
+IVAR1,IVAR2,IVAR3,IVAR4,IVAR5
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>,<winsock.h>,<winsock2.h>
+
+#VARS
+char* OVAR1, char datasize[256]
+
+#HEADER
+
+#MAIN
+
+sprintf(datasize, "%lu", (unsigned long) strlen(IVAR5));
+
+OVAR1 = malloc(98+strlen(IVAR2)+strlen(IVAR1)+strlen(IVAR3)+strlen(IVAR4)+strlen(IVAR5)+1);
+
+strcpy(OVAR1, "POST ");
+strcat(OVAR1, IVAR2);
+strcat(OVAR1, " HTTP/1.1\r\nHost: ");
+strcat(OVAR1, IVAR1);
+strcat(OVAR1, "\r\nConnection: keep-alive\r\nUser-Agent: ");
+strcat(OVAR1, IVAR3);
+strcat(OVAR1, "\r\nContent-type: ");
+strcat(OVAR1, IVAR4);
+strcat(OVAR1, "\r\nContent-Length: ");
+strcat(OVAR1, datasize);
+strcat(OVAR1, "\r\n\r\n");
+strcat(OVAR1, IVAR5);
+
+#FOOTER

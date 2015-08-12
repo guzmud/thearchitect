@@ -1,0 +1,37 @@
+#DOC
+Generate a random string
+In vars : string size (IVAR1)
+Out vars : random string (OVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>,<wincrypt.h>
+
+#VARS
+HCRYPTPROV prov, char *OVAR1, int ty, unsigned int xy, char *alphanumtable
+
+#HEADER
+alphanumtable = (char*) malloc(63);
+alphanumtable = "0123456789QWERTZUIOPASDFGHJKLYXCVBNMqwertzuiopasdfghjklxycvbnm";
+
+#MAIN
+OVAR1 = (char*) malloc(IVAR1+1);
+xy = 0;
+
+CryptAcquireContext(&prov, NULL, NULL, PROV_RSA_FULL, 0);
+
+for (ty = 0; ty<IVAR1; ty++) {
+CryptGenRandom(prov, sizeof(xy), (BYTE *)&xy);
+OVAR1[ty] = alphanumtable[xy % 62];
+}
+
+CryptReleaseContext(prov,0);
+
+OVAR1[IVAR1] = '\0';
+
+#FOOTER

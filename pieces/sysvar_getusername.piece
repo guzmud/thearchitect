@@ -1,0 +1,22 @@
+#DOC
+Get local env variable
+Out vars : username (OVAR1)
+
+#INVAR
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+char OVAR1[254], DWORD usersize
+
+#HEADER
+
+#MAIN
+usersize = sizeof(OVAR1);
+GetUserName(OVAR1, &usersize);
+
+#FOOTER

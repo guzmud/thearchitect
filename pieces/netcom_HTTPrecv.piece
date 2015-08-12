@@ -1,0 +1,57 @@
+#DOC
+Using a connected socket to POST data
+Todo : TCPrecv instead of HTTPrecv ?
+In vars : socket handler (IVAR1)
+Out vars : buffered data (OVAR1), buffer size (OVAR2)
+
+#INVAR
+IVAR1
+
+#OTVAR
+OVAR1,OVAR2
+
+#INCLUDES
+<windows.h>,<winsock.h>,<winsock2.h>
+
+#VARS
+SOCKET IVAR1, int bytesRecv, unsigned char *tbuf, unsigned char* OVAR1, int tsize, int bsize, int OVAR2, int err, unsigned char *swapchar, int k
+
+#HEADER
+
+#MAIN
+
+bytesRecv = SOCKET_ERROR;
+bsize = 4096;
+tsize = bsize;
+OVAR2 = 0;
+OVAR1 = malloc(bsize);
+OVAR1[0] = '\0';
+
+while(1 == 1)
+{
+    tbuf = malloc(bsize+1);
+    bytesRecv = recv(IVAR1, tbuf, bsize, 0);
+    tbuf[bytesRecv+1] = '\0';
+    OVAR2 = OVAR2+bytesRecv;
+
+    if (bytesRecv == 0 || bytesRecv == WSAECONNRESET)
+    {
+        break;
+    }
+
+    if (bytesRecv < 0)
+    {
+        break;
+    }
+    if (OVAR2 > (tsize-1))
+    {
+        tsize = tsize+bsize;
+        swapchar = realloc(OVAR1, tsize+1);
+        OVAR1 = swapchar;
+    }
+    for (k=0;k<bytesRecv;k++) {
+        OVAR1[OVAR2-bytesRecv+k] = tbuf[k];
+    }
+}
+
+#FOOTER

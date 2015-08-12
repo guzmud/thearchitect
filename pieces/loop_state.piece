@@ -1,0 +1,22 @@
+#DOC
+Long regarding a state value
+In vars : loop condition (IVAR1), loop behaviour (IVAR2)
+
+#INVAR
+IVAR1, IVAR2
+
+#OTVAR
+
+#INCLUDES
+
+#VARS
+int i
+
+#HEADER
+while IVAR1 {
+
+#MAIN
+IVAR2
+
+#FOOTER
+}

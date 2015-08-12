@@ -1,0 +1,19 @@
+#DOC
+Free a string or other memory element
+In vars : string name (IVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+
+#INCLUDES
+
+#VARS
+
+#HEADER
+
+#MAIN
+free(IVAR1);
+
+#FOOTER

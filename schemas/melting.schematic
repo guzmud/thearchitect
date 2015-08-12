@@ -1,0 +1,12 @@
+#SAMPLE
+
+name[melting]
+version[beta]
+
+#PIECES
+
+sysvar.exepath[][lpath]
+datamanip.catstr["del /F /Q ",lpath][bstr]
+datamanip.catstr[bstr,"\ndel test.bat"][batched]
+file.writetxt["test.bat",batched][]
+process.create["test.bat",NULL,CREATE_NO_WINDOW][phandle]

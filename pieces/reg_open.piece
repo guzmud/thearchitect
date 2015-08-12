@@ -1,0 +1,23 @@
+#DOC
+Opening a registry key
+In vars : registry (IVAR1), registry key full path (IVAR2)
+Out vars : key variable (OVAR1)
+
+#INVAR
+IVAR1,IVAR2
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+HKEY OVAR1,
+
+#HEADER
+
+#MAIN
+RegOpenKeyEx(IVAR1, TEXT(IVAR2), 0, KEY_READ, &OVAR1);
+
+#FOOTER

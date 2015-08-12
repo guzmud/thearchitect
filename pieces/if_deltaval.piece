@@ -1,0 +1,42 @@
+#DOC
+If delta between values
+In vars : tested variable 1 (IVAR1), tested variable 2 (IVAR2), max delta (IVAR3), if reaction (IVAR4), else reaction (IVAR5)
+
+#INVAR
+IVAR1,IVAR2,IVAR3,IVAR4,IVAR5
+
+#OTVAR
+
+#INCLUDES
+<windows.h>
+
+#VARS
+
+#HEADER
+
+#MAIN
+
+if (IVAR1 > IVAR2)
+{
+if ((IVAR1 - IVAR2) < IVAR3)
+{
+IVAR4
+}
+else
+{
+IVAR5
+}
+}
+else
+{
+if ((IVAR2 - IVAR1) < IVAR3)
+{
+IVAR4
+}
+else
+{
+IVAR5
+}
+}
+
+#FOOTER

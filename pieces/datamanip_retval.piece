@@ -1,0 +1,23 @@
+#DOC
+Assign return value to variable
+In vars : value  type (IVAR1), instruction (IVAR2)
+Out vars : variable name (OVAR1)
+
+#INVAR
+IVAR1,IVAR2
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+IVAR1 OVAR1
+
+#HEADER
+
+#MAIN
+OVAR1 = IVAR2
+
+#FOOTER

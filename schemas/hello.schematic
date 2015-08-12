@@ -1,0 +1,7 @@
+#SAMPLE
+
+name[Hello]
+version[alpha]
+
+#PIECES
+loop.range[10,(cli.print["Hello world\n"][])][]

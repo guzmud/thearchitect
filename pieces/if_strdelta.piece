@@ -1,0 +1,37 @@
+#DOC
+Inclusive comparison between two arrays
+In vars : array1 (IVAR1), array2 (IVAR2), if reaction (IVAR3), else reaction (IVAR4)
+
+#INVAR
+IVAR1,IVAR2,IVAR3,IVAR4
+
+#OTVAR
+
+#INCLUDES
+<stdlib.h>,<string.h>
+
+#VARS
+char *tstr1, char *tstr2, int ti
+
+#HEADER
+tstr1 = malloc(sizeof(IVAR1));
+for (ti = 0; ti < strlen(tstr1); ti++) {
+tstr1[ti] = toupper(IVAR1[ti]);
+}
+
+#MAIN
+tstr2 = malloc(sizeof(IVAR2));
+for (ti = 0; ti < strlen(tstr2); ti++) {
+tstr2[ti] = toupper(IVAR2[ti]);
+}
+
+if (strstr(tstr1,tstr2))
+{
+IVAR3
+}
+else
+{
+IVAR4
+}
+
+#FOOTER

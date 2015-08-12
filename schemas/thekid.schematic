@@ -1,0 +1,22 @@
+#SAMPLE
+
+name[TheKid]
+version[alpha]
+
+#PIECES
+
+cli.print["\"THE KID\"\n"][]
+
+cli.print[{"\nTHE KID","\nAM I ALONE ?","\nNO, YOU ARE NOT ALONE"}][]
+
+netcom.HTTPGetFromHostname["www.intothematrix.com","/rl_img/anime_gallery_kids_1L.jpg","theOracle"][theBuffer,buffsize]
+
+datamanip.splitHTTPheader[theBuffer,buffsize][httphead,httpdata,headsize,datasize]
+
+sysvar.getenv["USERPROFILE"][usrvar]
+datamanip.catstr[usrvar,"\\damnkid.jpg"][kidfilepath]
+file.writeptr[kidfilepath,httpdata,datasize][]
+
+reg.writevalue[HKEY_CURRENT_USER,"Control Panel\\Desktop", "Wallpaper",kidfilepath][]
+
+routine.melting[][]

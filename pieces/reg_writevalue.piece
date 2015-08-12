@@ -1,0 +1,26 @@
+#DOC
+Write registry key value
+In vars : registry (IVAR1), registry key full path (IVAR2), value name (IVAR3), value data (IVAR4)
+
+#INVAR
+IVAR1,IVAR2,IVAR3,IVAR4
+
+#OTVAR
+
+#INCLUDES
+<windows.h>
+
+#VARS
+HKEY rK, DWORD dwType, DWORD dwDataSize, char *sdata
+
+#HEADER
+dwType=0;
+dwDataSize=0;
+
+#MAIN
+RegOpenKeyEx(IVAR1, TEXT(IVAR2), 0, KEY_WRITE, &rK);
+
+RegSetValueEx(rK, TEXT(IVAR3), 0, REG_SZ, TEXT(IVAR4), strlen(IVAR4));
+
+#FOOTER
+RegCloseKey(rK);

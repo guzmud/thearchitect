@@ -1,0 +1,27 @@
+#DOC
+Open a file and write in it (write a string)
+In vars : fullpath filename (IVAR1), data to write (IVAR2)
+
+#INVAR
+IVAR1, IVAR2
+
+#OTVAR
+
+#INCLUDES
+<stdlib.h>,<malloc.h>
+
+#VARS
+char *ch,FILE *fileptr,long tlen
+
+#HEADER
+
+#MAIN
+fileptr = fopen(IVAR1,"wb+");
+tlen = strlen(IVAR2);
+ch = malloc(tlen+1);
+strcpy(ch, IVAR2);
+ch[tlen] = '\0';
+fwrite(ch, strlen(ch), 1, fileptr);
+fclose(fileptr);
+
+#FOOTER

@@ -1,0 +1,27 @@
+#DOC
+Various operations between integers
+In vars : integer (IVAR1), integer (IVAR2), integer (IVAR3)
+Out vars : integer (OVAR1)
+
+#INVAR
+IVAR1,IVAR2,IVAR3
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+
+#VARS
+unsigned int k1, unsigned int k2, unsigned int k3, unsigned int k4
+
+#HEADER
+
+#MAIN
+k1 = IVAR1;
+k2 = IVAR1;
+k1 = IVAR2;
+k3 = IVAR3;
+k4 = k3 + k2 + k1;
+k4 = k4 - k1;
+
+#FOOTER

@@ -1,0 +1,430 @@
+THE ARCHITECT DOCUMENTATION : PIECES
+
+#### SECTIONS TABLE ####
+	CLI (3)
+	COMMON (2)
+	DATAMANIP (6)
+	FILE (3)
+	GUI (1)
+	IF (7)
+	JUNK (1)
+	LOOP (2)
+	MUTEX (2)
+	NETCOM (9)
+	PROCESS (1)
+	RANDOM (2)
+	REG (6)
+	SYSVAR (8)
+	ALIASES
+########################
+
+
+#### COMMON
+
+# DIRECT
+
+Direct coding, adds a ; at the end
+
+	In vars : code (IVAR1)
+
+# FREE
+
+Free a string or other memory element
+
+	In vars : string name (IVAR1)
+
+
+#### CLI
+
+# CLI_HIDE
+
+Ask Windows to hide the console interface
+
+
+# CLI_PRINT
+
+Printing an array in stdout
+
+	In vars : array (IVAR1)
+
+# CLI_SHOW
+
+Ask Windows to show the console interface
+
+
+
+#### DATAMANIP
+
+# DATAMANIP_ASIVAL
+
+Assigne value to variable
+
+	In vars : value  type (IVAR1), function (IVAR2)
+	Out vars : variable name (OVAR1)
+
+# DATAMANIP_CATSTR
+
+Extend one buffered string with an other string (concatenate)
+
+	In vars : buffered string one (IVAR1), buffered string two (IVAR2)
+	Out vars : concatened string (OVAR1)
+
+# DATAMANIP_INT2STR
+
+Cast an integer into a string
+
+	In vars : the integer (IVAR1)
+	Out vars : the string (OVAR1)
+
+# DATAMANIP_RETVAL
+
+Assign return value to variable
+
+	In vars : value  type (IVAR1), instruction (IVAR2)
+	Out vars : variable name (OVAR1)
+
+# DATAMANIP_SPLITHTTPHEADER
+
+Split a char around the first occurence of xODOAODOA
+
+	In vars : input buffer (IVAR1), buffer size (IVAR2)
+	Out vars : HTTPHeader (OVAR1), HTTPData (OVAR2), headersize (OVAR3), datasize (OVAR4)
+
+# DATAMANIP_XORARRAY
+
+xOR an array (OVAR1 = IVAR1 xOR IVAR2)
+
+	In vars : input buffer (IVAR1), xOR key (IVAR2)
+	Out vars : output buffer (OVAR1)
+
+
+#### FILE
+
+# FILE_READ
+
+Open and read the content of a file
+
+	In vars : fullpath filename (IVAR1)
+	Out vars : buffer with the content of the file (OVAR1), buffersize (OVAR2)
+
+# FILE_WRITEPTR
+
+Open a file and write in it (write a POINTER)
+
+	In vars : fullpath filename (IVAR1), data to write (IVAR2), datasize (IVAR3)
+
+# FILE_WRITETXT
+
+Open a file and write in it (write a string)
+
+	In vars : fullpath filename (IVAR1), data to write (IVAR2)
+
+
+#### GUI
+
+# GUI_MESSAGEBOX
+
+Create a message box
+
+	In vars : box title (IVAR1), box message (IVAR2)
+
+
+#### IF
+
+# IF_ASIVAR
+
+If assigned variable (works with datamanip.asival)
+
+	In vars : variable  type (IVAR1), tested instruction (IVAR2), tested value (IVAR3), if reaction (IVAR4), else reaction (IVAR5)
+
+# IF_DELTAVAL
+
+If delta between values
+
+	In vars : tested variable 1 (IVAR1), tested variable 2 (IVAR2), max delta (IVAR3), if reaction (IVAR4), else reaction (IVAR5)
+
+# IF_EQUALVAL
+
+If return value
+
+	In vars : tested variable (IVAR1), tested value (IVAR2), if reaction (IVAR3), else reaction (IVAR4)
+
+# IF_HOOKEDFX
+
+Test if a function is hooked, stolen from pafish the paranoid fish
+
+	In vars : test function (IVAR1), if reaction (IVAR2), else reaction (IVAR3)
+
+# IF_PROCESS
+
+Checking if process running by name.
+Stolen from http://forums.codeguru.com/showthread.php?542741-how-to-safely-use-EnumProcesses-older-and-new-OS
+
+	Todo : Will try with WTSEnumerateProcesses first, use EnumProcesses as a backup.
+	In vars : name to check (IVAR1), if reaction (IVAR2), else reaction (IVAR3)
+
+# IF_STRDELTA
+
+Inclusive comparison between two arrays
+
+	In vars : array1 (IVAR1), array2 (IVAR2), if reaction (IVAR3), else reaction (IVAR4)
+
+# IF_STREQUAL
+
+Exact comparison between two arrays
+
+	In vars : array1 (IVAR1), array2 (IVAR2), if reaction (IVAR3), else reaction (IVAR4)
+
+
+#### JUNK
+
+# JUNK_OPERATIONS
+
+Various operations between integers
+
+	In vars : integer (IVAR1), integer (IVAR2), integer (IVAR3)
+	Out vars : integer (OVAR1)
+
+
+#### LOOP
+
+# LOOP_RANGE
+
+Loop in a range of k
+
+	In vars : loopsize (IVAR1), loop behaviour (IVAR2)
+
+# LOOP_STATE
+
+Long regarding a state value
+
+	In vars : loop condition (IVAR1), loop behaviour (IVAR2)
+
+
+#### MUTEX
+
+# MUTEX_CREATE
+
+Create a mutex (no error management)
+
+	In vars : mutex name (IVAR1)
+	Out vars : mutex handler (OVAR1)
+
+# MUTEX_RELEASE
+
+Release a mutex (no error management)
+
+	In vars : mutex handler (IVAR1)
+
+
+#### NETCOM
+
+# NETCOM_HTTPGETREQUEST
+
+Construct the HTTP Get header
+
+	In vars : server name (IVAR1), server ressource (IVAR2), user agent (IVAR3)
+	Out vars : buffered header (OVAR1)
+
+# NETCOM_HTTPPOSTREQUEST
+
+Construct the HTTP Post header
+
+	In vars : server name (IVAR1), server ressource (IVAR2), user agent (IVAR3), MIME type (IVAR4), data to post (IVAR5)
+	Out vars : buffered header (OVAR1)
+
+# NETCOM_HTTPRECV
+
+Using a connected socket to POST data
+
+	Todo : TCPrecv instead of HTTPrecv ?
+	In vars : socket handler (IVAR1)
+	Out vars : buffered data (OVAR1), buffer size (OVAR2)
+
+# NETCOM_HTTPSEND
+
+Using a connected socket to send data
+
+	In vars : socket handler (IVAR1), HTTP request (IVAR2)
+
+# NETCOM_CLOSESOCKET
+
+Close a socket and start WSACleanup
+Stolen from http://johnnie.jerrata.com/winsocktutorial/.
+
+	In vars : socket handler (IVAR1)
+
+# NETCOM_LOCALIP
+
+Get local IP value
+
+	Out vars : string containing the IP value (OVAR1)
+
+# NETCOM_SENDPING
+
+Create a WinSock, send a PING request (ICMP ECHO, 8)
+Stolen from http://www.binarytides.com/winsock-icmp-ping-flood-code-c-sockets/
+
+	In vars : hostname (IVAR1)
+
+# NETCOM_SOCKETHOSTNAME
+
+Create a WinSock connected to hostname
+Stolen from http://johnnie.jerrata.com/winsocktutorial/.
+
+	In vars : hostname (IVAR1)
+	Out vars : socket handler (OVAR1)
+
+# NETCOM_SOCKETIPADDR
+
+Create a WinSock connected to ip-resolved hostname
+Stolen from http://johnnie.jerrata.com/winsocktutorial/.
+
+	In vars : ip address (IVAR1)
+	Out vars : socket handler (OVAR1)
+
+
+#### PROCESS
+
+# PROCESS_CREATE
+
+Creating a process
+
+	In vars : executable fullpath (IVAR1), process args (IVAR2), process flags (IVAR3)
+	Out vars : process handler (OVAR1)
+
+
+#### RANDOM
+
+# RANDOM_INT
+
+Generate a random integer
+
+	In vars : max value (IVAR1)
+	Out vars : random integer (OVAR1)
+
+# RANDOM_STR
+
+Generate a random string
+
+	In vars : string size (IVAR1)
+	Out vars : random string (OVAR1)
+
+
+#### REG
+
+# REG_CLOSE
+
+Closing a registry key, given as an input argument
+
+	In vars : key variable (IVAR1)
+
+# REG_OPEN
+
+Opening a registry key
+
+	In vars : registry (IVAR1), registry key full path (IVAR2)
+	Out vars : key variable (OVAR1)
+
+# REG_READ
+
+Reading a registry key
+
+	In vars : registry path (IVAR1), registry key (IVAR2)
+	Out vars : registry key value (OVAR1)
+
+# REG_READSTR
+
+Read registry key value data (if data is string / REG_SZ)
+
+	In vars : registry key full path (IVAR1), value to query name (IVAR2)
+	Out vars : buffered value (OVAR1)
+
+# REG_WRITEKEY
+
+Create registry key
+
+	Todo : gestion du lpdwDisposition si pre-existe
+	In vars : registry key full path (IVAR1)
+
+# REG_WRITEVALUE
+
+Write registry key value
+
+	In vars : registry (IVAR1), registry key full path (IVAR2), value name (IVAR3), value data (IVAR4)
+
+
+#### SYSVAR
+
+# SYSVAR_EXEPATH
+
+Get local executable path
+
+	Out vars : path buffered (OVAR1)
+
+# SYSVAR_GETENV
+
+Get local env variable
+
+	In vars : variable name (IVAR1)
+	Out vars : variable value (OVAR1)
+
+# SYSVAR_GETUSERNAME
+
+Get local env variable
+
+	Out vars : username (OVAR1)
+
+# SYSVAR_GETWINVERSION
+
+Get local Windows version
+
+	Out vars : windows major version (OVAR1), Windows minor version (OVAR2)
+
+# SYSVAR_ISADMIN
+
+Return a string (1 is admin, 0 is not)
+
+	Out vars : boolean string (OVAR1)
+
+# SYSVAR_LASTERROR
+
+Variable embedding the GetLastError value (following an instruction, used for defensive and environmental-awareness routines)
+
+	In vars : instruction (IVAR1)
+	Out vars : variable name (OVAR1)
+
+# SYSVAR_MODULEHANDLE
+
+Get local env variable
+
+	In vars : module name (IVAR1)
+	Out vars : output variable (OVAR1)
+
+# SYSVAR_PROCADDRESS
+
+Get local env variable
+
+	In vars : module handle (IVAR1), proc name (IVAR2)
+	Out vars : output variable (OVAR1)
+
+
+#### ALIASES
+
+netcom.HTTPGetFromHostname
+netcom.HTTPPostToHostname
+junk.regcheck
+junk.filecheck
+junk.maths
+if.mousemov
+if.username
+if.computername
+if.filepath
+if.module
+if.modulefunction
+if.regstr
+if.exactregstr
+if.debugger
+if.regkey
+if.filexist
+if.mutex

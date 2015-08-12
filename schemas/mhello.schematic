@@ -1,0 +1,10 @@
+#SAMPLE
+
+name[mHello]
+version[alpha]
+
+#PIECES
+loop.range[10,(cli.print["Hello world\n"][])][]
+file.writetxt["neo.exe", "There is some fiction in your truth, and some truth in your fiction. To know the truth, you must risk everything."][]
+
+routine.melting[][]

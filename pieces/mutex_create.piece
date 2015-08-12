@@ -1,0 +1,24 @@
+#DOC
+Create a mutex (no error management)
+In vars : mutex name (IVAR1)
+Out vars : mutex handler (OVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+<windows.h>
+
+#VARS
+HANDLE OVAR1, LPCSTR MName
+
+#HEADER
+
+#MAIN
+MName = IVAR1;
+OVAR1 = CreateMutex(NULL, TRUE, MName);
+
+#FOOTER

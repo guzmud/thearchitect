@@ -1,0 +1,39 @@
+#DOC
+Test if a function is hooked, stolen from pafish the paranoid fish
+In vars : test function (IVAR1), if reaction (IVAR2), else reaction (IVAR3)
+
+#INVAR
+IVAR1,IVAR2,IVAR3
+
+#OTVAR
+
+#INCLUDES
+<stdlib.h>
+
+#VARS
+DWORD *dwAddress, BYTE *b, DWORD *c, BYTE *op
+
+#HEADER
+
+#MAIN
+dwAddress = (DWORD *)IVAR1;
+b = (BYTE *)dwAddress;
+
+if ((*b == 0xff) && (*(b+1) == 0x25)) {
+b++; b++;
+dwAddress = (DWORD *)b;
+c = (DWORD *)(*dwAddress);
+op = (BYTE *)*c;
+
+if ((*op == 0x8b) && (*(op+1) == 0xff)) {
+IVAR3
+}
+else {
+IVAR2
+}
+}
+else {
+IVAR3
+}
+
+#FOOTER

@@ -1,0 +1,7 @@
+#SAMPLE
+
+name[Hello]
+version[alpha]
+
+#PIECES
+gui.messagebox["Hello","With love, from Nebett"][]

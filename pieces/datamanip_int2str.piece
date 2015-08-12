@@ -1,0 +1,24 @@
+#DOC
+Cast an integer into a string
+In vars : the integer (IVAR1)
+Out vars : the string (OVAR1)
+
+#INVAR
+IVAR1
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+
+#VARS
+int tint, char* OVAR1
+
+#HEADER
+
+#MAIN
+tint = IVAR1;
+OVAR1 = malloc(255);
+sprintf(OVAR1, "%u", tint);
+
+#FOOTER

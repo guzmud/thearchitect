@@ -1,0 +1,24 @@
+#DOC
+Extend one buffered string with an other string (concatenate)
+In vars : buffered string one (IVAR1), buffered string two (IVAR2)
+Out vars : concatened string (OVAR1)
+
+#INVAR
+IVAR1, IVAR2
+
+#OTVAR
+OVAR1
+
+#INCLUDES
+
+#VARS
+char* OVAR1
+
+#HEADER
+
+#MAIN
+OVAR1 = malloc(strlen(IVAR1)+strlen(IVAR2)+1);
+strcpy(OVAR1, IVAR1);
+strcat(OVAR1, IVAR2);
+
+#FOOTER

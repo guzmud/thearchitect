@@ -1,0 +1,30 @@
+#DOC
+If assigned variable (works with datamanip.asival)
+In vars : variable  type (IVAR1), tested instruction (IVAR2), tested value (IVAR3), if reaction (IVAR4), else reaction (IVAR5)
+
+#INVAR
+IVAR1,IVAR2,IVAR3,IVAR4,IVAR5
+
+#OTVAR
+
+#INCLUDES
+<windows.h>
+
+#VARS
+IVAR1 IVAR1asivar
+
+#HEADER
+
+#MAIN
+IVAR2
+
+if (IVAR1asivar == IVAR3)
+{
+IVAR4
+}
+else
+{
+IVAR5
+}
+
+#FOOTER
