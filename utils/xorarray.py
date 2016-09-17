@@ -2,12 +2,14 @@
 
 import binascii
 
-XORVAL = 42 # change to the wanted value, impact the schematic according to
+XORVAL = 42  # change to the wanted value, impact the schematic according to
+
 
 def data_from_file(ifile):
     with open(ifile, "rb") as f:
         data = f.read()
     return data
+
 
 def data_to_file(ofile, data):
     with open(ofile, "wb") as f:
@@ -24,6 +26,6 @@ data = data_from_file(filepath)
 
 xdata = ""
 for i in data:
-    xdata += chr(ord(i)^XORVAL)
+    xdata += chr(ord(i) ^ XORVAL)
 
-data_to_file(str(filename).split(".")[0]+".xored",binascii.hexlify(xdata))
+data_to_file(str(filename).split(".")[0]+".xored", binascii.hexlify(xdata))

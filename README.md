@@ -67,11 +67,11 @@ Anticipated FAQ
 
 *todo*
 
-Non-authoritative todo list
+Todo list
 ---------------------------
 
 - *Anticipated FAQ*
-- *A real non-authoritative todo list*
+- *A real todo list*
 
 Thanks to
 ---------
