@@ -38,5 +38,6 @@ otcmd = str(results_folder)+"/"+str(schematic)+".exe"
 
 # COMPILER CONSOLE COMMAND
 
-cmd="i686-w64-mingw32-gcc ./"+str(incmd)+str(llibs)+"-s -Os -o ./"+str(otcmd)
+gcc = "i686-w64-mingw32-gcc ./"
+gcc_options = "-s -Os -o ./"
 cmd = str(gcc) + str(incmd) + str(llibs) + str(gcc_options) + str(otcmd)
