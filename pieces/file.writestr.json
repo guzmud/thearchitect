@@ -1,0 +1,26 @@
+{
+  "doc": "open a file and write a string in it",
+  "headers": [
+    "stdio.h",
+    "stdlib.h",
+    "malloc.h"
+  ],
+  "inputs": [
+    "path_to_file",
+    "data_to_write"
+  ],
+  "variables": [
+    {"type": "char", "name": "*ch"},
+    {"type": "FILE", "name": "*fileptr"},
+    {"type": "long", "name": "tlen"}
+  ],
+  "corecode": [
+    "fileptr = fopen(path_to_file, \"wb+\");",
+    "tlen = strlen(data_to_write);",
+    "ch = malloc(tlen+1);",
+    "strcpy(ch, data_to_write);",
+    "ch[tlen] = '\\0';",
+    "fwrite(ch, strlen(ch), 1, fileptr);",
+    "fclose(fileptr);"
+  ]
+}

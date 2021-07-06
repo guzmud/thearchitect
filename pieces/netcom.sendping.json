@@ -1,0 +1,56 @@
+{
+  "doc": "open a socket and send a ping using it",
+  "headers": [
+    "stdint.h",
+    "windows.h",
+    "winsock.h"
+  ],
+  "inputs": [
+    "target_hostname"
+  ],
+  "variables": [
+    {"type": "WSADATA", "name": "wsaData"},
+    {"type": "int", "name": "nret"},
+    {"type": "LPHOSTENT", "name": "hostEntry"},
+    {"type": "SOCKET", "name": "datSocket"},
+    {"type": "SOCKADDR_IN", "name": "serverInfo"},
+    {"type": "struct iphdr", "name": "*iph"},
+    {"type": "char*", "name": "packet"},
+    {"type": "char*", "name": "data"},
+    {"type": "int", "name": "payload_size"},
+    {"type": "int", "name": "packet_size"}
+  ],
+  "setupcode": [
+    "struct icmphdr",
+    "{",
+    "    uint8_t type;",
+    "    uint8_t code;",
+    "    uint16_t checksum;",
+    "    union",
+    "    {",
+    "        struct",
+    "        {",
+    "            uint16_t id;",
+    "            uint16_t sequence;",
+    "        } echo;",
+    "        uint32_t gateway;",
+    "        struct",
+    "        {",
+    "            uint16_t __unused;",
+    "            uint16_t mtu;",
+    "        } frag;",
+    "    } un;",
+    "};"
+  ],
+  "corecode": [
+    "struct icmphdr *icmph;",
+    "payload_size = 512;",
+    "WSAStartup(MAKEWORD(2,2), &wsaData);",
+    "hostEntry = gethostbyname(target_hostname);",
+    "if (!hostEntry)",
+    "{",
+    "    printf(\"Host entry issue\\n\");",
+    "    WSACleanup();",
+    "}"
+  ]
+}

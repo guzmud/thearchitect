@@ -1,0 +1,12 @@
+{
+  "doc": "printing an array in console stdout",
+  "headers": [
+    "stdio.h"
+  ],
+  "inputs": [
+    "array_to_print"
+  ],
+  "corecode": [
+    "printf(array_to_print);"
+  ]
+}

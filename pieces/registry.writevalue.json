@@ -1,0 +1,30 @@
+{
+  "doc": "open a registry key and write a value",
+  "headers": [
+    "windows.h",
+    "winreg.h"
+  ],
+  "inputs": [
+    "registry",
+    "key_full_path",
+    "value_name",
+    "value_data"
+  ],
+  "variables": [
+    {"type": "HKEY", "name": "rK"},
+    {"type": "DWORD", "name": "dwType"},
+    {"type": "DWORD", "name": "dwDataSize"},
+    {"type": "char", "name": "*sdata"}
+  ],
+  "setupcode": [
+    "dwType=0;",
+    "dwDataSize=0;"
+  ],
+  "corecode": [
+    "RegOpenKeyEx(registry, TEXT(key_full_path), 0, KEY_WRITE, &rK);",
+    "RegSetValueEx(rK, TEXT(value_name), 0, REG_SZ, TEXT(value_data), strlen(value_data));"
+  ],
+  "teardowncode": [
+    "RegCloseKey(rK);"
+  ]
+}

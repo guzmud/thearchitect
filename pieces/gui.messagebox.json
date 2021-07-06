@@ -1,0 +1,14 @@
+{
+  "doc": "display a message box with title and content",
+  "headers": [
+    "windows.h",
+    "tchar.h"
+  ],
+  "inputs": [
+    "box_title",
+    "box_content"
+  ],
+  "corecode": [
+    "MessageBoxA(NULL, box_content, box_title, MB_OK);"
+  ]
+}

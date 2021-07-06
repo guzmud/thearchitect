@@ -7,6 +7,14 @@ RUN apt-get update && apt-get install -y \
   python3-pip \
   && rm -rf /var/lib/apt/lists/*
 
-COPY buildfolder/entrypoint.sh /entrypoint.sh
+RUN mkdir -p /npi
+WORKDIR /npi
 
-ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
+COPY buildfolder/thearchitect /npi/thearchitect
+
+COPY buildfolder/requirements.txt /npi/requirements.txt
+RUN python3 -m pip install -r /npi/requirements.txt
+
+COPY buildfolder/entrypoint.sh /npi/entrypoint.sh
+
+ENTRYPOINT ["/bin/bash", "/npi/entrypoint.sh"]

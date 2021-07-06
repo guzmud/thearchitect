@@ -1,0 +1,20 @@
+{
+  "doc": "create a registry key",
+  "headers": [
+    "windows.h",
+    "winreg.h"
+  ],
+  "inputs": [
+    "registry",
+    "key_full_path"
+  ],
+  "variables": [
+    {"type": "HKEY", "name": "rK"}
+  ],
+  "corecode": [
+    "RegCreateKeyEx(registry, TEXT(key_full_path), 0, NULL, REG_OPTION_NON_VOLATILE, KEY_WRITE, NULL, &rK, NULL);"
+  ],
+  "teardowncode": [
+    "RegCloseKey(rK);"
+  ]
+}
